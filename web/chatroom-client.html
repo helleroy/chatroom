@@ -1,0 +1,21 @@
+<link rel="import" href="packages/polymer/polymer.html">
+
+<polymer-element name="chatroom-client">
+    <template>
+        <form on-submit="{{submitMessage}}">
+            <label>
+                Write message:
+                <input type="text" value="{{message}}"/>
+            </label>
+            <button type="submit" >Send</button>
+        </form>
+        <ul>
+            <template repeat="{{message in messages}}">
+                <li>
+                    {{message}}
+                </li>
+            </template>
+        </ul>
+    </template>
+    <script type="application/dart" src="chatroom-client.dart"></script>
+</polymer-element>

@@ -1,4 +1,5 @@
-import 'dart:html';
+import "dart:html";
+import "dart:convert";
 import "package:polymer/polymer.dart";
 
 @CustomTag("chatroom-client")
@@ -27,7 +28,7 @@ class ChatroomClient extends PolymerElement {
 
   void submitMessage(Event event, var detail, Node sender) {
     event.preventDefault();
-    _ws.send(message.trim());
+    _ws.send(JSON.encode({"message": message.trim()}));
     message = "";
   }
 

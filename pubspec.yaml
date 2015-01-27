@@ -1,4 +1,4 @@
-name: chatroom-client
+name: Chatroom
 version: 0.0.1
 description: Dart chat app frontend
 dependencies:

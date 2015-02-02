@@ -19,7 +19,11 @@ class ChatClient {
 
   void messageHandler(String data) {
     print("Message from $_address:$_port: $data");
-    distributeMessage("$_address:$_port Message: ${data.trim()}");
+    Map json = JSON.decode(data);
+    distributeMessage(JSON.encode({
+        "sender": "$_address:$_port",
+        "message": "${json["message"]}"
+    }));
   }
 
   void errorHandler(String error) {

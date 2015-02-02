@@ -1,0 +1,15 @@
+<link rel="import" href="packages/polymer/polymer.html">
+
+<polymer-element name="message-list">
+    <template>
+        <ul>
+            <template repeat="{{message in messages}}">
+                <li>
+                    {{message["sender"]}}
+                    {{message["message"]}}
+                </li>
+            </template>
+        </ul>
+    </template>
+    <script type="application/dart" src="messagelist.dart"></script>
+</polymer-element>

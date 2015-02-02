@@ -1,4 +1,6 @@
 <link rel="import" href="packages/polymer/polymer.html">
+<link rel="import" href="messagelist.html">
+<link rel="import" href="userlist.html">
 
 <polymer-element name="chatroom-client">
     <template>
@@ -7,15 +9,10 @@
                 Write message:
                 <input type="text" value="{{message}}"/>
             </label>
-            <button type="submit" >Send</button>
+            <button type="submit">Send</button>
         </form>
-        <ul>
-            <template repeat="{{message in messages}}">
-                <li>
-                    {{message}}
-                </li>
-            </template>
-        </ul>
+        <message-list messages="{{messages}}"></message-list>
+        <user-list users="{{users}}"></user-list>
     </template>
     <script type="application/dart" src="chatroomclient.dart"></script>
 </polymer-element>

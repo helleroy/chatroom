@@ -1,0 +1,14 @@
+<link rel="import" href="packages/polymer/polymer.html">
+
+<polymer-element name="user-list">
+    <template>
+        <ul>
+            <template repeat="{{user in users}}">
+                <li>
+                    {{user}}
+                </li>
+            </template>
+        </ul>
+    </template>
+    <script type="application/dart" src="userlist.dart"></script>
+</polymer-element>

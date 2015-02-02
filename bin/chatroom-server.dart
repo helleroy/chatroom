@@ -32,11 +32,13 @@ Function handleWS(HttpConnectionInfo connectionInfo) {
 
     clients.add(chatClient);
 
-    client.add("Welcome to the chat! There are ${clients.length - 1} other clients.\n");
+    client.add(JSON.encode({
+        "message": "Welcome to the chat! There are ${clients.length - 1} other clients."
+    }));
 
     chatClient.distributeMessage(JSON.encode({
-    "message": "${connectionInfo.remoteAddress.address}:${connectionInfo.remotePort} Connected",
-    "connectedClients": clients
+        "message": "${connectionInfo.remoteAddress.address}:${connectionInfo.remotePort} Connected",
+        "connectedClients": clients
     }));
 
   };

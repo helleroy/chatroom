@@ -30,10 +30,5 @@ Function handleWS(HttpConnectionInfo connectionInfo) {
     ChatClient chatClient = new ChatClient(client, connectionInfo, clients);
 
     clients.add(chatClient);
-
-    client.add(JSON.encode({
-        "text": "Welcome to the chat! There are ${clients.length - 1} other clients."
-    }));
-
   };
 }

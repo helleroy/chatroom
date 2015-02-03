@@ -1,28 +1,50 @@
 <link rel="import" href="packages/polymer/polymer.html">
 <link rel="import" href="messagelist.html">
 <link rel="import" href="userlist.html">
+<link rel="import" href="packages/paper_elements/paper_input_decorator.html">
+<link rel="import" href="packages/paper_elements/paper_button.html">
 
 <polymer-element name="chatroom-client">
     <template>
+        <style>
+            :host {
+                display: block;
+                margin: 0 auto;
+                width: 60%;
+                height: 95vh;
+                font-family: arial, helvetica, sans-serif;
+            }
+
+            message-list {
+                width: 65%;
+                height: 50%;
+                display: inline-block;
+            }
+
+            user-list {
+                width: 30%;
+                display: inline-block;
+                vertical-align: top;
+            }
+        </style>
+        <h1>Chatroom</h1>
         <template if="{{!connected}}">
             <form on-submit="{{connect}}">
-                <label>
-                    Username:
-                    <input type="text" value="{{username}}" required>
-                </label>
-                <button type="submit">Connect</button>
+                <paper-input-decorator label="Username" floatingLabel>
+                    <input is="core-input" value="{{username}}"/>
+                </paper-input-decorator>
+                <paper-button on-click="{{connect}}" raised>Connect</paper-button>
             </form>
         </template>
         <template if="{{connected}}">
-            <form on-submit="{{submitMessage}}">
-                <label>
-                    Write message:
-                    <input type="text" value="{{message}}"/>
-                </label>
-                <button type="submit">Send</button>
-            </form>
             <message-list messages="{{messages}}"></message-list>
             <user-list users="{{users}}"></user-list>
+            <form on-submit="{{submitMessage}}">
+                <paper-input-decorator label="Write message" floatingLabel>
+                    <input is="core-input" value="{{message}}"/>
+                </paper-input-decorator>
+                <paper-button on-click="{{submitMessage}}" raised>Send</paper-button>
+            </form>
         </template>
     </template>
     <script type="application/dart" src="chatroomclient.dart"></script>

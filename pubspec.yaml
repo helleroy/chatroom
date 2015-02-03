@@ -3,7 +3,8 @@ version: 0.0.1
 description: Dart chat app frontend
 dependencies:
   browser: any
-  polymer: '>=0.15.1 <0.16.0'
+  polymer: ">=0.15.1 <0.16.0"
+  paper_elements: ">=0.6.1 <0.7.0"
 dev_dependencies:
   unittest: any
 transformers:

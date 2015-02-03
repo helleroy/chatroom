@@ -2,6 +2,17 @@
 
 <polymer-element name="message-list">
     <template>
+        <style>
+            :host {
+                overflow: auto;
+            }
+            ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                line-height: 2em;
+            }
+        </style>
         <ul>
             <template repeat="{{message in messages}}">
                 <li>

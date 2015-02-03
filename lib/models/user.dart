@@ -1,13 +1,21 @@
 library chatroom.models.user;
+import 'dart:convert';
 
 class User {
 
   String id, name;
 
-  User(this.id, {this.name});
+  User(String this.id, {String this.name : ""});
 
-  User.fromJSON(Map json) {
+  User.fromJson(Map json) {
     this.id = json["id"];
-    this.name = json["name"];
+    this.name = json.containsKey("name") ? json["name"] : "";
+  }
+
+  String toJson() {
+    return JSON.encode({
+        "id": id,
+        "name": name
+    });
   }
 }

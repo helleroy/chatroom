@@ -1,7 +1,7 @@
 <link rel="import" href="packages/polymer/polymer.html">
 
 <polymer-element name="user-list">
-    <template>
+    <template if="{{connected}}">
         <p>{{users.length}} users connected</p>
         <ul>
             <template repeat="{{user in users}}">

@@ -9,19 +9,26 @@ class ChatroomClient extends PolymerElement {
 
   WebSocket _ws;
 
-  @observable String message;
+  @observable bool connected = false;
+  @observable String message, username;
   @observable List<Message> messages = toObservable([]);
   @observable List<User> users = toObservable([]);
 
-  ChatroomClient.created() : super.created() {
+  ChatroomClient.created() : super.created();
+
+  void connect(Event event, var detail, Node sender) {
+    event.preventDefault();
+
     _ws = new WebSocket("ws://localhost:8080");
 
     _ws.onOpen.listen((Event data) {
+      _ws.send(new User("", name: username).toJson());
       messages.add(new Message("Connected to the server!"));
+      connected = true;
     });
 
     _ws.onMessage.listen((MessageEvent event) {
-      var message = new Message.fromJSON(JSON.decode(event.data));
+      var message = new Message.fromJson(JSON.decode(event.data));
       messages.add(message);
       if (message.connectedClients.isNotEmpty) {
         users.clear();
@@ -31,6 +38,7 @@ class ChatroomClient extends PolymerElement {
 
     _ws.onClose.listen((CloseEvent event) {
       messages.add(new Message("Connection to the server was lost..."));
+      connected = false;
     });
   }
 
@@ -41,6 +49,5 @@ class ChatroomClient extends PolymerElement {
     }));
     message = "";
   }
-
 
 }

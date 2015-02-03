@@ -4,15 +4,26 @@
 
 <polymer-element name="chatroom-client">
     <template>
-        <form on-submit="{{submitMessage}}">
-            <label>
-                Write message:
-                <input type="text" value="{{message}}"/>
-            </label>
-            <button type="submit">Send</button>
-        </form>
-        <message-list messages="{{messages}}"></message-list>
-        <user-list users="{{users}}"></user-list>
+        <template if="{{!connected}}">
+            <form on-submit="{{connect}}">
+                <label>
+                    Username:
+                    <input type="text" value="{{username}}" required>
+                </label>
+                <button type="submit">Connect</button>
+            </form>
+        </template>
+        <template if="{{connected}}">
+            <form on-submit="{{submitMessage}}">
+                <label>
+                    Write message:
+                    <input type="text" value="{{message}}"/>
+                </label>
+                <button type="submit">Send</button>
+            </form>
+            <message-list messages="{{messages}}"></message-list>
+            <user-list users="{{users}}"></user-list>
+        </template>
     </template>
     <script type="application/dart" src="chatroomclient.dart"></script>
 </polymer-element>

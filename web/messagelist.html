@@ -5,7 +5,7 @@
         <ul>
             <template repeat="{{message in messages}}">
                 <li>
-                    {{message.sender.id}}
+                    <template if="{{message.sender.name.isNotEmpty}}">{{message.sender.name}}:</template>
                     {{message.text]}}
                 </li>
             </template>

@@ -23,7 +23,7 @@ Function handleWS(HttpConnectionInfo connectionInfo) {
     print("Connection from ${connectionInfo.remoteAddress.address}:${connectionInfo.remotePort}");
 
     var json = JSON.encode({
-        "message": "${connectionInfo.remoteAddress.address}:${connectionInfo.remotePort} Connected",
+        "text": "${connectionInfo.remoteAddress.address}:${connectionInfo.remotePort} connected",
         "connectedClients": clients
     });
 
@@ -32,12 +32,7 @@ Function handleWS(HttpConnectionInfo connectionInfo) {
     clients.add(chatClient);
 
     client.add(JSON.encode({
-        "message": "Welcome to the chat! There are ${clients.length - 1} other clients."
-    }));
-
-    chatClient.distributeMessage(JSON.encode({
-        "message": "${connectionInfo.remoteAddress.address}:${connectionInfo.remotePort} Connected",
-        "connectedClients": clients
+        "text": "Welcome to the chat! There are ${clients.length - 1} other clients."
     }));
 
   };

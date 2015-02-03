@@ -1,6 +1,7 @@
 library chatroom.models.message;
 
 import "user.dart";
+import 'dart:convert';
 
 class Message {
 
@@ -8,12 +9,26 @@ class Message {
   String text;
   List<User> connectedClients;
 
-  Message(this.text, {this.sender, this.connectedClients : const []});
+  Message(this.text, {User this.sender, List<User> this.connectedClients : const []});
 
-  Message.fromJSON(Map json) {
-    this.sender = json.containsKey("sender") ? new User.fromJSON(json["sender"]) : new User("");
-    this.text = json["message"];
+  Message.fromJson(Map json) {
+    this.sender = json.containsKey("sender") ? new User.fromJson(JSON.decode(json["sender"])) : null;
+    this.text = json["text"];
 
-    this.connectedClients = json.containsKey("connectedClients") ? json["connectedClients"].map((Map clientJson) => new User.fromJSON(clientJson)) : const [];
+    this.connectedClients = json.containsKey("connectedClients") ? json["connectedClients"].map((String clientJson) => new User.fromJson(JSON.decode(clientJson))) : const [];
   }
+
+  String toJson() {
+    Map json = {
+        "text": text,
+        "connectedClients": connectedClients
+    };
+
+    if (sender != null) {
+      json["sender"] = sender;
+    }
+
+    return JSON.encode(json);
+  }
+
 }

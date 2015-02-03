@@ -1,9 +1,12 @@
 import "dart:io";
 import "dart:convert";
+import "package:chatroom/models/user.dart";
+import "package:chatroom/models/message.dart";
 
 class ChatClient {
 
   WebSocket _socket;
+  User _user;
   String _address;
   int _port;
   List<ChatClient> _clients;
@@ -13,37 +16,12 @@ class ChatClient {
     _address = connectionInfo.remoteAddress.address;
     _port = connectionInfo.remotePort;
     _clients = clients;
+    _user = new User("$_address:$_port");
 
-    _socket.listen(messageHandler, onError : errorHandler, onDone : finishedHandler);
+    _socket.listen(_messageHandler, onError : _errorHandler, onDone : _finishedHandler);
   }
 
-  void messageHandler(String data) {
-    print("Message from $_address:$_port: $data");
-    Map json = JSON.decode(data);
-    distributeMessage(JSON.encode({
-        "sender": {
-            "id" : "$_address:$_port"
-        },
-        "message": "${json["message"]}"
-    }));
-  }
-
-  void errorHandler(String error) {
-    print("$_address:$_port: Error: $error");
-    removeClient(this);
-    _socket.close();
-  }
-
-  void finishedHandler() {
-    var message = "$_address:$_port: Disconnected";
-    print(message);
-    removeClient(this);
-    distributeMessage(JSON.encode({
-        "message": message,
-        "connectedClients": _clients
-    }));
-    _socket.close();
-  }
+  User get user => _user;
 
   void write(String message) {
     _socket.add(message);
@@ -55,13 +33,48 @@ class ChatClient {
     }
   }
 
-  void removeClient(ChatClient client) {
+  void _messageHandler(String data) {
+    print("Message from $_address:$_port: $data");
+
+    Map json = JSON.decode(data);
+    if (_checkConnectMessage(json)) {
+      distributeMessage(new Message("${_user.id} Connected", sender: _user, connectedClients: _clients.map((ChatClient client) => client.user).toList()).toJson());
+    } else {
+      distributeMessage(new Message(json["message"], sender: _user).toJson());
+    }
+  }
+
+  void _errorHandler(String error) {
+    print("$_address:$_port: Error: $error");
+    _removeClient(this);
+    _socket.close();
+  }
+
+  void _finishedHandler() {
+    var message = "${_user.name} disconnected";
+    print(message);
+    _removeClient(this);
+    distributeMessage(new Message(message, connectedClients: _clients.map((ChatClient client) => client.user).toList()).toJson());
+    _socket.close();
+  }
+
+  void _removeClient(ChatClient client) {
     _clients.remove(this);
+  }
+
+  bool _checkConnectMessage(Map json) {
+    var user = new User.fromJson(json);
+    if (user.name.isNotEmpty) {
+      this._user.name = user.name;
+      return true;
+    }
+    return false;
   }
 
   Map toJson() {
     return {
-        "id" : "$_address:$_port"
+        "id": "${_user.id}",
+        "name": "${_user.name}"
     };
   }
 

@@ -12,13 +12,14 @@ class ChatClient {
   List<ChatClient> _clients;
 
   ChatClient(WebSocket socket, HttpConnectionInfo connectionInfo, List<ChatClient> clients) {
-    _socket = socket;
-    _address = connectionInfo.remoteAddress.address;
-    _port = connectionInfo.remotePort;
-    _clients = clients;
-    _user = new User("$_address:$_port");
+    this
+      .._socket = socket
+      .._address = connectionInfo.remoteAddress.address
+      .._port = connectionInfo.remotePort
+      .._clients = clients
+      .._user = new User("$_address:$_port")
 
-    _socket.listen(_messageHandler, onError : _errorHandler, onDone : _finishedHandler);
+      .._socket.listen(_messageHandler, onError : _errorHandler, onDone : _finishedHandler);
   }
 
   User get user => _user;
@@ -40,7 +41,7 @@ class ChatClient {
     if (_checkConnectMessage(json)) {
       distributeMessage(new Message("${_user.id} Connected", sender: _user, connectedClients: _clients.map((ChatClient client) => client.user).toList()).toJson());
     } else {
-      distributeMessage(new Message(json["message"], sender: _user).toJson());
+      distributeMessage(new Message(json["text"], sender: _user).toJson());
     }
   }
 

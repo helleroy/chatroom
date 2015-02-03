@@ -23,7 +23,6 @@ class ChatroomClient extends PolymerElement {
 
     _ws.onOpen.listen((Event data) {
       _ws.send(new User("", name: username).toJson());
-      messages.add(new Message("Connected to the server!"));
       connected = true;
     });
 
@@ -44,9 +43,8 @@ class ChatroomClient extends PolymerElement {
 
   void submitMessage(Event event, var detail, Node sender) {
     event.preventDefault();
-    _ws.send(JSON.encode({
-        "message": message.trim()
-    }));
+
+    _ws.send(new Message(message.trim()).toJson());
     message = "";
   }
 

@@ -12,9 +12,10 @@ class Message {
   Message(this.text, {User this.sender, List<User> this.connectedClients : const []});
 
   Message.fromJson(Map json) {
-    this.text = json["text"];
-    this.sender = json.containsKey("sender") ? new User.fromJson(JSON.decode(json["sender"])) : null;
-    this.connectedClients = json.containsKey("connectedClients") ? json["connectedClients"].map((String clientJson) => new User.fromJson(JSON.decode(clientJson))) : const [];
+    this
+      ..text = json["text"]
+      ..sender = json.containsKey("sender") ? new User.fromJson(JSON.decode(json["sender"])) : null
+      ..connectedClients = json.containsKey("connectedClients") ? json["connectedClients"].map((String clientJson) => new User.fromJson(JSON.decode(clientJson))) : const [];
   }
 
   String toJson() {

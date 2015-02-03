@@ -8,8 +8,9 @@ class User {
   User(String this.id, {String this.name : ""});
 
   User.fromJson(Map json) {
-    this.id = json["id"];
-    this.name = json.containsKey("name") ? json["name"] : "";
+    this
+      ..id = json["id"]
+      ..name = json.containsKey("name") ? json["name"] : "";
   }
 
   String toJson() {

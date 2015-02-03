@@ -2,10 +2,12 @@
 
 <polymer-element name="user-list">
     <template>
+        <p>{{users.length}} users connected</p>
         <ul>
             <template repeat="{{user in users}}">
                 <li>
-                    {{user}}
+                    {{user.id}}
+                    {{user.name}}
                 </li>
             </template>
         </ul>

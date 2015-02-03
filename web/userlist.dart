@@ -5,7 +5,5 @@ class UserList extends PolymerElement {
 
   @published List<String> users;
 
-  UserList.created() : super.created() {
-
-  }
+  UserList.created() : super.created();
 }

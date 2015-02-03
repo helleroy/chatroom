@@ -21,7 +21,9 @@ class ChatClient {
     print("Message from $_address:$_port: $data");
     Map json = JSON.decode(data);
     distributeMessage(JSON.encode({
-        "sender": "$_address:$_port",
+        "sender": {
+            "id" : "$_address:$_port"
+        },
         "message": "${json["message"]}"
     }));
   }
@@ -37,7 +39,8 @@ class ChatClient {
     print(message);
     removeClient(this);
     distributeMessage(JSON.encode({
-        "message": message, "connectedClients": _clients
+        "message": message,
+        "connectedClients": _clients
     }));
     _socket.close();
   }

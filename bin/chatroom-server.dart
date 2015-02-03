@@ -5,8 +5,7 @@ import "chatclient.dart";
 List<ChatClient> clients = [];
 
 void main() {
-
-  HttpServer.bind(InternetAddress.ANY_IP_V6, 8080).then((HttpServer server) {
+  HttpServer.bind(InternetAddress.ANY_IP_V4, 8080).then((HttpServer server) {
     server.listen((HttpRequest request) {
       if (WebSocketTransformer.isUpgradeRequest(request)) {
         WebSocketTransformer.upgrade(request).then(handleWS(request.connectionInfo));

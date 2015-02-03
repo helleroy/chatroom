@@ -5,8 +5,8 @@
         <ul>
             <template repeat="{{message in messages}}">
                 <li>
-                    {{message["sender"]}}
-                    {{message["message"]}}
+                    {{message.sender.id}}
+                    {{message.text]}}
                 </li>
             </template>
         </ul>

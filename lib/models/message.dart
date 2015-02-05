@@ -15,7 +15,7 @@ class Message {
     this
       ..text = json["text"]
       ..sender = json.containsKey("sender") ? new User.fromJson(JSON.decode(json["sender"])) : null
-      ..connectedClients = json.containsKey("connectedClients") ? json["connectedClients"].map((String clientJson) => new User.fromJson(JSON.decode(clientJson))) : const [];
+      ..connectedClients = json.containsKey("connectedClients") ? json["connectedClients"].map((String clientJson) => new User.fromJson(JSON.decode(clientJson))).toList() : const [];
   }
 
   String toJson() {

@@ -5,6 +5,8 @@ dependencies:
   browser: any
   polymer: ">=0.15.1 <0.16.0"
   paper_elements: ">=0.6.1 <0.7.0"
+  shelf: ">=0.6.0 <0.7.0"
+  shelf_static: ">=0.2.2 <0.3.0"
 dev_dependencies:
   unittest: any
 transformers:

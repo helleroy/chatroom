@@ -1,10 +1,13 @@
 import "dart:io";
 import "chatclient.dart";
+import "package:shelf/shelf_io.dart" as shelf;
+import "package:shelf_static/shelf_static.dart";
 
 List<ChatClient> clients = [];
 
 void main() {
-  HttpServer.bind(InternetAddress.ANY_IP_V4, 8080).then((HttpServer server) {
+
+  HttpServer.bind(InternetAddress.ANY_IP_V4, 8081).then((HttpServer server) {
     server.listen((HttpRequest request) {
       if (WebSocketTransformer.isUpgradeRequest(request)) {
         WebSocketTransformer.upgrade(request).then(handleWS(request.connectionInfo));
@@ -15,6 +18,8 @@ void main() {
       }
     });
   });
+
+  shelf.serve(createStaticHandler("../build/web", defaultDocument: "index.html"), "localhost", 8080);
 }
 
 Function handleWS(HttpConnectionInfo connectionInfo) {

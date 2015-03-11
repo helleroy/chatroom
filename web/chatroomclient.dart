@@ -19,7 +19,7 @@ class ChatroomClient extends PolymerElement {
   void connect(Event event, var detail, Node sender) {
     event.preventDefault();
 
-    _ws = new WebSocket("ws://localhost:8080");
+    _ws = new WebSocket("ws://localhost:8081");
 
     _ws.onOpen.listen((Event data) {
       _ws.send(new User("", name: username).toJson());

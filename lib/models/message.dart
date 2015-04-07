@@ -1,27 +1,22 @@
 library chatroom.models.message;
 
-import "user.dart";
 import 'dart:convert';
 
 class Message {
 
-  User sender;
-  String text;
-  List<User> connectedClients;
+  String sender, text;
 
-  Message(this.text, {User this.sender, List<User> this.connectedClients : const []});
+  Message(this.text, {String this.sender});
 
   Message.fromJson(Map json) {
     this
       ..text = json["text"]
-      ..sender = json.containsKey("sender") ? new User.fromJson(JSON.decode(json["sender"])) : null
-      ..connectedClients = json.containsKey("connectedClients") ? json["connectedClients"].map((String clientJson) => new User.fromJson(JSON.decode(clientJson))).toList() : const [];
+      ..sender = json.containsKey("sender") ? json["sender"] : "";
   }
 
   String toJson() {
     Map json = {
-        "text": text,
-        "connectedClients": connectedClients
+      "text": text,
     };
 
     if (sender != null) {

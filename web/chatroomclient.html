@@ -7,27 +7,41 @@
 <polymer-element name="chatroom-client">
     <template>
         <style>
+            * {
+                box-sizing: border-box;
+            }
+
             :host {
                 display: block;
                 margin: 0 auto;
-                width: 60%;
-                height: 95vh;
+                height: 100%;
                 font-family: arial, helvetica, sans-serif;
             }
 
-            message-list {
-                width: 65%;
-                height: 50%;
-                display: inline-block;
+            #main {
+                position: relative;
+                height: 100%;
+                width: 75%;
+                float: right;
             }
 
             user-list {
-                width: 30%;
-                display: inline-block;
-                vertical-align: top;
+                height: 100%;
+                width: 25%;
+                float: left;
+            }
+
+            #input {
+                position: absolute;
+                width: 100%;
+                bottom: 0;
+                padding: 15px;
+            }
+
+            .line-1 {
+                height: 1rem;
             }
         </style>
-        <h1>Chatroom</h1>
         <template if="{{!connected}}">
             <form on-submit="{{connect}}">
                 <paper-input-decorator label="Username" floatingLabel>
@@ -37,14 +51,25 @@
             </form>
         </template>
         <template if="{{connected}}">
-            <message-list messages="{{messages}}"></message-list>
             <user-list users="{{users}}"></user-list>
-            <form on-submit="{{submitMessage}}">
-                <paper-input-decorator label="Write message" floatingLabel>
-                    <input is="core-input" value="{{message}}"/>
-                </paper-input-decorator>
-                <paper-button on-click="{{submitMessage}}" raised>Send</paper-button>
-            </form>
+            <div id="main">
+                <message-list messages="{{messages}}"></message-list>
+                <div id="input">
+                    <div class="line-1">
+                        <template if="{{usersWriting.length > 0}}">
+                            Users writing:
+                            <template repeat="{{user in usersWriting}}"><span>{{user}} </span></template>
+                        </template>
+                    </div>
+                    <form on-submit="{{submitMessage}}">
+                        <paper-input-decorator label="Write message" floatingLabel>
+                            <input is="core-input" value="{{message}}" on-focus="{{startedWriting}}"
+                                   on-blur="{{stoppedWriting}}"/>
+                        </paper-input-decorator>
+                        <paper-button on-click="{{submitMessage}}" raised>Send</paper-button>
+                    </form>
+                </div>
+            </div>
         </template>
     </template>
     <script type="application/dart" src="chatroomclient.dart"></script>

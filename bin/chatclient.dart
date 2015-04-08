@@ -37,45 +37,37 @@ class ChatClient {
   void _messageHandler(String data) {
     print("Message from $_address:$_port: $data");
 
-    Map json = JSON.decode(data);
-    if (_checkConnectMessage(json)) {
-      distributeMessage(new Message("${_user.id} Connected", sender: _user, connectedClients: _clients.map((ChatClient client) => client.user).toList()).toJson());
-    } else {
-      distributeMessage(new Message(json["text"], sender: _user).toJson());
+    Message message = new Message.fromJson(JSON.decode(data));
+
+    switch (message.type) {
+      case MessageType.connect:
+        this._user.name = message.sender.name;
+        distributeMessage(new Message("${_user.id} Connected", type: message.type, sender: _user, connectedClients: _clients.map((ChatClient client) => client.user).toList()).toJson());
+        break;
+      default:
+        distributeMessage(new Message(message.text, type: message.type, sender: _user).toJson());
+        break;
     }
   }
 
   void _errorHandler(String error) {
     print("$_address:$_port: Error: $error");
-    _removeClient(this);
+    _clients.remove(this);
     _socket.close();
   }
 
   void _finishedHandler() {
     var message = "${_user.name} disconnected";
     print(message);
-    _removeClient(this);
+    _clients.remove(this);
     distributeMessage(new Message(message, connectedClients: _clients.map((ChatClient client) => client.user).toList()).toJson());
     _socket.close();
   }
 
-  void _removeClient(ChatClient client) {
-    _clients.remove(this);
-  }
-
-  bool _checkConnectMessage(Map json) {
-    var user = new User.fromJson(json);
-    if (user.name.isNotEmpty) {
-      this._user.name = user.name;
-      return true;
-    }
-    return false;
-  }
-
   Map toJson() {
     return {
-        "id": "${_user.id}",
-        "name": "${_user.name}"
+      "id": "${_user.id}",
+      "name": "${_user.name}"
     };
   }
 
